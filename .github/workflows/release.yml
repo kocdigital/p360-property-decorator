@@ -12,6 +12,8 @@ jobs:
     permissions:
       packages: write
       contents: read
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -27,5 +29,3 @@ jobs:
 
       - name: Publish the library
         run: yarn publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
