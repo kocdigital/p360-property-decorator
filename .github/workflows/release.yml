@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  release:
+    types: released
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Install CI dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build the library
+        run: yarn build
+
+      - name: Publish the library
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
