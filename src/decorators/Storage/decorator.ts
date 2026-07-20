@@ -32,7 +32,7 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
     const {
         storage = localStorage,
         watch = true,
-        serializer= StorageSerializers.object
+        serializer = StorageSerializers.object,
     } = options;
 
     return createDecorator((componentOptions, propertyKey) => {
@@ -73,13 +73,13 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
             window.addEventListener('storage', onStorage.bind(this));
 
             originalMounted.call(this);
-        }
+        };
 
         componentOptions.beforeDestroy = function() {
             window.removeEventListener('storage', onStorage.bind(this));
 
             originalBeforeDestroy.call(this);
-        }
+        };
 
         if (watch) {
             const originalWatch = componentOptions.watch || {};
@@ -92,7 +92,7 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
                         storage.setItem(storageKey, serializer.write(value));
                     }
                 },
-                deep: true
+                deep: true,
             };
 
             componentOptions.watch = originalWatch;

@@ -1,7 +1,6 @@
-
 export interface StorageSerializer<T> {
-  read: (raw: string) => T;
-  write: (value: T) => string;
+    read: (raw: string) => T;
+    write: (value: T) => string;
 }
 
 export interface StorageOptions<T = any> {
