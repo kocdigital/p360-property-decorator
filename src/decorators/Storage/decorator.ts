@@ -36,7 +36,7 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
     } = options;
 
     return createDecorator((componentOptions, propertyKey) => {
-        const originalMounted = componentOptions.mounted || function() {};
+        const originalCreated = componentOptions.created || function() {};
         const originalBeforeDestroy = componentOptions.beforeDestroy || function() {};
 
         function onStorage(event: StorageEvent) {
@@ -55,7 +55,7 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
             }
         }
 
-        componentOptions.mounted = function() {
+        componentOptions.created = function() {
             const storedValue = storage.getItem(storageKey);
 
             if (storedValue !== null) {
@@ -72,7 +72,7 @@ export default function Storage<T = any>(storageKey: string, options: StorageOpt
 
             window.addEventListener('storage', onStorage.bind(this));
 
-            originalMounted.call(this);
+            originalCreated.call(this);
         };
 
         componentOptions.beforeDestroy = function() {
