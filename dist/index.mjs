@@ -43,7 +43,7 @@ function Storage(storageKey, options = {}) {
     serializer = StorageSerializers.object
   } = options;
   return createDecorator((componentOptions, propertyKey) => {
-    const originalMounted = componentOptions.mounted || function() {
+    const originalCreated = componentOptions.created || function() {
     };
     const originalBeforeDestroy = componentOptions.beforeDestroy || function() {
     };
@@ -61,7 +61,7 @@ function Storage(storageKey, options = {}) {
         this[propertyKey] = event.newValue;
       }
     }
-    componentOptions.mounted = function() {
+    componentOptions.created = function() {
       const storedValue = storage.getItem(storageKey);
       if (storedValue !== null) {
         try {
@@ -75,7 +75,7 @@ function Storage(storageKey, options = {}) {
         }
       }
       window.addEventListener("storage", onStorage.bind(this));
-      originalMounted.call(this);
+      originalCreated.call(this);
     };
     componentOptions.beforeDestroy = function() {
       window.removeEventListener("storage", onStorage.bind(this));
